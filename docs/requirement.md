@@ -38,9 +38,6 @@
 | ひとこと | - | テキスト | 最大30文字 |
 | 好きなゲーム | - | 複数選択 | マスターデータから選択 |
 | 好きな配信者 | - | テキスト入力 | 複数人入力可能（最大5人） |
-| プレイスタイル | - | 複数選択 | ガチ/エンジョイ/ひとりで/みんなと |
-| プレイ時間帯 | - | 複数選択 | 朝/昼/夜/深夜 |
-| SNSリンク | - | URL入力 | X/YouTube/Twitch/Discord |
 
 ### 2.3 タイムライン機能
 - 新着順でプロフカードを一覧表示
@@ -98,42 +95,7 @@
 | created_at | timestamp | 作成日時 |
 
 #### profiles（プロフカード）
-| カラム | 型 | 説明 |
-|--------|-----|------|
-| id | uuid | PK |
-| user_id | uuid | FK → users.id |
-| nickname | text | ニックネーム |
-| bio | text | ひとこと |
-| play_styles | text[] | プレイスタイル |
-| play_times | text[] | プレイ時間帯 |
-| favorite_streamers | text[] | 好きな配信者 |
-| sns_links | jsonb | SNSリンク |
-| created_at | timestamp | 作成日時 |
-| updated_at | timestamp | 更新日時 |
-
-#### profile_games（プロフカード×ゲーム中間テーブル）
-| カラム | 型 | 説明 |
-|--------|-----|------|
-| profile_id | uuid | FK → profiles.id |
-| game_id | uuid | FK → games.id |
-
-#### games（ゲームマスター）
-| カラム | 型 | 説明 |
-|--------|-----|------|
-| id | uuid | PK |
-| name | text | ゲーム名 |
-| category | text | カテゴリ |
-
-### 5.2 初期ゲームマスターデータ
-| カテゴリ | ゲーム名 |
-|----------|----------|
-| FPS/TPS | Apex Legends, VALORANT, Fortnite, Call of Duty, Overwatch 2, Splatoon 3 |
-| MOBA | League of Legends |
-| バトロワ | PUBG |
-| RPG | 原神, FF14, モンスターハンター |
-| 格闘 | ストリートファイター6, スマブラSP |
-| カード | ポケポケ, 遊戯王マスターデュエル |
-| その他 | Minecraft, Among Us, 雀魂 |
+あとで考える
 
 ---
 

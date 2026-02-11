@@ -11,7 +11,7 @@ export default async function NewCardsPage() {
     redirect("/login");
   }
 
-  const { data: existingProfile, error } = await supabase
+  const { data: existingProfile } = await supabase
     .from("profiles")
     .select("id")
     .eq("user_id", user.id)

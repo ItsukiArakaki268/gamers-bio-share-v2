@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import ProfileForm from "../../components/profile-form";
+import { updateProfile } from "./actions";
 
 export default async function EditCardsPage() {
   const supabase = await createClient();
@@ -43,7 +44,15 @@ export default async function EditCardsPage() {
   };
   return (
     <>
-      <ProfileForm games={games || []} defaultValues={defaultValue} />
+      <ProfileForm
+        games={games || []}
+        defaultValues={defaultValue}
+        isEditMode={true}
+        onSubmit={async (data) => {
+          "use server";
+          await updateProfile(profile.id, data);
+        }}
+      />
     </>
   );
 }

@@ -19,13 +19,13 @@ type ProfileFormProps = {
   games: Game[];
   defaultValues?: DefaultValues;
   isEditMode?: boolean;
-  profileId?: string;
   onSubmit: (data: {
     nickname: string;
     bio: string;
     gameIds: number[];
     streamers: string[];
   }) => Promise<void>;
+  // プロフ削除をあとで実装
   onDelete?: () => Promise<void>;
 };
 
@@ -33,9 +33,7 @@ export default function ProfileForm({
   games,
   defaultValues,
   isEditMode,
-  profileId,
   onSubmit,
-  onDelete,
 }: ProfileFormProps) {
   const [nickname, setNickname] = useState(defaultValues?.nickname || "");
   const [bio, setBio] = useState(defaultValues?.bio || "");

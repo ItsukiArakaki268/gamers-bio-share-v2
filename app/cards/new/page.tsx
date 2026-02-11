@@ -27,7 +27,6 @@ export default async function NewCardsPage() {
 
   return (
     <>
-      <div>NewCardsPage</div>
       <ProfileForm games={games || []} />
     </>
   );

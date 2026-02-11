@@ -1,7 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { createProfile } from "./actions";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 type Game = {
   id: number;
@@ -34,22 +35,28 @@ export default function ProfileForm({
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const router = useRouter();
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
       const filteredStreamers = streamers.filter((s) => s.trim() !== "");
-      // Server Actionを呼び出し
 
-      router.push("/");
-      router.refresh();
+      // Server Actionを呼び出し
+      await createProfile({
+        nickname,
+        bio,
+        gameIds: selectedGameIds,
+        streamers: filteredStreamers,
+      });
     } catch (error) {
+      // リダイレクトエラーは正常なので無視
+      if (isRedirectError(error)) {
+        throw error;
+      }
+
       console.error(error);
       alert("エラーが発生しました");
-    } finally {
       setIsSubmitting(false);
     }
   };

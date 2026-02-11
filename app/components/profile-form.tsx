@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { createProfile } from "../cards/new/actions";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 type Game = {
@@ -19,11 +18,24 @@ type DefaultValues = {
 type ProfileFormProps = {
   games: Game[];
   defaultValues?: DefaultValues;
+  isEditMode?: boolean;
+  profileId?: string;
+  onSubmit: (data: {
+    nickname: string;
+    bio: string;
+    gameIds: number[];
+    streamers: string[];
+  }) => Promise<void>;
+  onDelete?: () => Promise<void>;
 };
 
 export default function ProfileForm({
   games,
   defaultValues,
+  isEditMode,
+  profileId,
+  onSubmit,
+  onDelete,
 }: ProfileFormProps) {
   const [nickname, setNickname] = useState(defaultValues?.nickname || "");
   const [bio, setBio] = useState(defaultValues?.bio || "");
@@ -43,7 +55,7 @@ export default function ProfileForm({
       const filteredStreamers = streamers.filter((s) => s.trim() !== "");
 
       // Server Actionを呼び出し
-      await createProfile({
+      await onSubmit({
         nickname,
         bio,
         gameIds: selectedGameIds,
@@ -64,7 +76,7 @@ export default function ProfileForm({
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
       <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50 mb-6">
-        プロフカード作成
+        {isEditMode ? "プロフカード編集" : "プロフカード作成"}
       </h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
@@ -174,7 +186,7 @@ export default function ProfileForm({
           disabled={isSubmitting || !nickname}
           className="w-full px-4 py-3 bg-zinc-900 text-white font-medium rounded-lg hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-300"
         >
-          {isSubmitting ? "送信中" : "作成する"}
+          {isSubmitting ? "送信中" : isEditMode ? "更新する" : "作成する"}
         </button>
       </form>
     </div>

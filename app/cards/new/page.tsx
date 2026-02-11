@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import ProfileForm from "../../components/profile-form";
+import { createProfile } from "./actions";
 
 export default async function NewCardsPage() {
   const supabase = await createClient();
@@ -27,7 +28,11 @@ export default async function NewCardsPage() {
 
   return (
     <>
-      <ProfileForm games={games || []} />
+      <ProfileForm
+        games={games || []}
+        isEditMode={false}
+        onSubmit={createProfile}
+      />
     </>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { createProfile } from "./actions";
+import { createProfile } from "../cards/new/actions";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 type Game = {

@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 type Game = {
@@ -33,9 +34,28 @@ export default function ProfileForm({
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const filteredStreamers = streamers.filter((s) => s.trim() !== "");
+      // Server Actionを呼び出し
+
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+      alert("エラーが発生しました");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <>
-      <div>profile-form</div>
+    <form onSubmit={handleSubmit}>
       <p>ニックネーム</p>
       <input
         type="text"
@@ -70,6 +90,41 @@ export default function ProfileForm({
           {game.name}
         </label>
       ))}
-    </>
+      <p>好きな配信者</p>
+      {streamers.map((streamer, index) => (
+        <div key={index}>
+          <input
+            type="text"
+            value={streamer}
+            onChange={(e) => {
+              const newStreamers = [...streamers];
+              newStreamers[index] = e.target.value;
+              setStreamers(newStreamers);
+            }}
+            placeholder={`配信者 ${index + 1}`}
+          />
+          {streamers.length > 1 && (
+            <button
+              type="button"
+              onClick={() =>
+                setStreamers(streamers.filter((_, i) => i !== index))
+              }
+            >
+              削除
+            </button>
+          )}
+        </div>
+      ))}
+
+      {streamers.length < 5 && (
+        <button type="button" onClick={() => setStreamers([...streamers, ""])}>
+          配信者を追加
+        </button>
+      )}
+
+      <button type="submit" disabled={isSubmitting || !nickname}>
+        {isSubmitting ? "送信中" : "作成する"}
+      </button>
+    </form>
   );
 }
